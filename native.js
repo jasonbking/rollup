@@ -40,6 +40,27 @@ const getReportHeader = () => {
 	}
 };
 
+// node itself reports the os as 'sunos' despite 20+ years of divergence
+// from Solaris. Use output of `uname -o` to determine if we're really
+// running on an illumos distribution.
+const isIllumos = () => {
+	try {
+		if (platform != 'sunos') {
+			return false;
+		}
+
+		const child = spawnSync('/sbin/uname', ['-o'], {
+			encoding: 'utf8',
+			timeout: 1000,
+			windowsHide: true
+		});
+
+		return child.status === 0 && child.stdout?.trim() === 'illumos';
+	} catch {
+		return false;
+	}
+};
+
 let reportHeader;
 const isMingw32 = () => {
 	reportHeader ??= getReportHeader();
@@ -80,6 +101,9 @@ const bindingsByPlatformAndArch = {
 	},
 	openharmony: {
 		arm64: { base: 'openharmony-arm64' }
+	},
+	sunos: {
+		x64: { base: 'illumos-x64', illumos: true }
 	},
 	win32: {
 		arm64: { base: 'win32-arm64-msvc' },
@@ -140,6 +164,9 @@ function getPackageBase() {
 	}
 	if ('musl' in imported && isMusl()) {
 		return imported.musl || throwUnsupportedError(true);
+	}
+	if ('illumos' in imported && !isIllumos()) {
+		throwUnsupportedError(false);
 	}
 	return imported.base;
 }

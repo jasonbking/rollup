@@ -206,6 +206,12 @@ jobs:
             cross: cross
             build-std: true
 
+          # illumos
+          - host: ubuntu-latest
+            target: x86_64-unknown-illumos
+            cross: cross
+            build-std: true
+
     name: Build ${{ matrix.settings.name || matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
     timeout-minutes: 30

@@ -1,0 +1,22 @@
+{
+  "name": "@rollup/rollup-illumos-x64",
+  "version": "0.0.0",
+  "os": [
+    "sunos"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "rollup.illumos-x64.node"
+  ],
+  "description": "Native bindings for Rollup",
+  "author": "Lukas Taegert-Atkinson",
+  "homepage": "https://rollupjs.org/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rollup/rollup.git"
+  },
+  "main": "./rollup.illumos-x64.node"
+}
